@@ -1,18 +1,19 @@
 import React from "react"
 import { Card, Button } from "react-bootstrap"
 import Rating from './Rating'
+import {Link} from 'react-router-dom'
 const Product = ({ product }) => {
   return (
     <Card style={{ width: "18rem" }}>
-      <a href={`/products/${product._id}`}>
+      <Link to={`/products/${product._id}`}>
         <Card.Img variant="top" src={product.image} />
-      </a>
+      </Link>
       <Card.Body>
-        <a href={`/products/${product._id}`}>
+        <Link to={`/products/${product._id}`}>
           <Card.Title as="div">
             <strong>{product.name}</strong>
           </Card.Title>
-        </a>
+        </Link>
 
         <Card.Text as="div">
          <Rating value = {product.rating} text = {`${product.numReviews} reviews`} />

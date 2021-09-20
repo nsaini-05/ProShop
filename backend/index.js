@@ -1,10 +1,11 @@
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
+import connectDB from "./config/db.js"
 dotenv.config()
 const app = express()
 app.use(cors())
-
+connectDB()
 import products from "./products.js"
 
 app.get("/products", (req, res) => {
@@ -16,6 +17,8 @@ app.get("/products/:id", (req, res) => {
   res.send(product)
 })
 
-app.listen(5000, (req, res) => {
-  console.log("Server Started on  5000")
+const port = process.env.PORT || 5000
+
+app.listen(port, (req, res) => {
+  console.log(`Server Started on ${port} `)
 })

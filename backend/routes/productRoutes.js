@@ -1,12 +1,17 @@
 import express from "express"
+import {
+  getAllProducts,
+  getSpecificProducts,
+} from "../controllers/productControllers.js"
 const router = express.Router()
 
-router.get("/", (req, res) => {
-  res.send("All products")
-})
+//@desc Fetch All Products
+//@route GET /products
+//@acess Public
+router.get("/", getAllProducts)
 
-router.get("/:id", (req, res) => {
-  // const product = products.find((product) => product._id === req.params.id)
-  res.send("Single Product")
-})
+//@desc Fetch Specific Products
+//@route GET /products/:id
+//@acess Public
+router.get("/:id", getSpecificProducts)
 export default router

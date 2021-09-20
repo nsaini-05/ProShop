@@ -2,20 +2,14 @@ import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
 import connectDB from "./config/db.js"
+import productRoutes from "./routes/productRoutes.js"
+
 dotenv.config()
 const app = express()
 app.use(cors())
 connectDB()
-import products from "./products.js"
 
-app.get("/products", (req, res) => {
-  res.json(products)
-})
-
-app.get("/products/:id", (req, res) => {
-  const product = products.find((product) => product._id === req.params.id)
-  res.send(product)
-})
+app.use("/products", productRoutes)
 
 const port = process.env.PORT || 5000
 

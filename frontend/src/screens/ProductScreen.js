@@ -3,19 +3,24 @@ import { Row, Col, ListGroup, Button } from "react-bootstrap"
 import Rating from "../components/Rating"
 import { Link } from "react-router-dom"
 import axios from "axios"
+import { useDispatch, useSelector } from "react-redux"
 
 const ProductDetailScreen = ({ match }) => {
   // const product = products.find((product) => product._id === match.params.id)
-  const [product, setProduct] = useState()
+  // const [product, setProduct] = useState()
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      const { data } = await axios.get(`/products/${match.params.id}`)
-      setProduct(data)
-    }
-    fetchProduct()
-  }, [match])
+  // useEffect(() => {
+  //   const fetchProduct = async () => {
+  //     const { data } = await axios.get(`/products/${match.params.id}`)
+  //     setProduct(data)
+  //   }
+  //   fetchProduct()
+  // }, [match])
 
+  const productList = useSelector((state) => state.productList)
+  const { error, products, loading } = productList
+  console.log(products)
+  const product = products.find((product) => product.id == match.params.id)
   return (
     <div>
       {product && (

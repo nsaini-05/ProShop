@@ -38,10 +38,10 @@ const CartScreen = ({ match, location, history }) => {
     history.push("/login?shipping")
   }
 
-  const cart = useSelector((state) => state.cart)
+  const cart = useSelector((state) => {
+    return state.cart
+  })
   const { cartItems } = cart
-
-  console.log(cart)
 
   return (
     <div>

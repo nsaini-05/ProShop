@@ -1,8 +1,6 @@
-import React, { useState } from "react"
+import React from "react"
 import { Spinner } from "react-bootstrap"
 const Loader = () => {
-  const [margin, setMargin] = useState("auto")
-
   return (
     <div>
       <Spinner
@@ -11,7 +9,7 @@ const Loader = () => {
         style={{
           width: "100px",
           height: "100px",
-          margin: margin,
+          margin: "auto",
           display: "block",
         }}
       />

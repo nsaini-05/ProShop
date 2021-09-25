@@ -17,7 +17,7 @@ export const App = () => {
             <Route path="/products" component={HomeScreen} exact></Route>
             <Route path="/products/:id" component={ProductScreen}></Route>
             <Route path="/cart/:id?" component={CartScreen}></Route>
-            <Route path="/user/login" component={loginScreen}></Route>
+            <Route path="/login" component={loginScreen}></Route>
           </Container>
         </main>
         <Footer />

@@ -11,7 +11,6 @@ import {
   ListGroupItem,
 } from "react-bootstrap"
 
-import Loader from "../components/Loader"
 import Message from "../components/Message"
 import { Link } from "react-router-dom"
 import { addToCart, removeFromCart } from "../actions/cartActions"
@@ -27,7 +26,7 @@ const CartScreen = ({ match, location, history }) => {
     if (product_id) {
       dispatch(addToCart(product_id, product_quantity))
     }
-  }, [dispatch, product_quantity])
+  }, [dispatch, product_quantity, product_id])
 
   //Remove from Cart
   const removeFromCartHandler = (product_id) => {
@@ -137,7 +136,7 @@ const CartScreen = ({ match, location, history }) => {
             </ListGroup>
           </Card>
         </Col>
-        <Col md={2}>Hello</Col>
+        <Col md={2}></Col>
       </Row>
     </div>
   )

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Loader from "../components/Loader"
 import Message from "../components/Message"
 import FormContainer from "../components/FormContainer"
-const LoginScreen = ({ history }) => {
+const LoginScreen = ({ history, location }) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
@@ -14,6 +14,8 @@ const LoginScreen = ({ history }) => {
   const { loading, error, userInfo } = LoggedinUser
 
   const dispatch = useDispatch()
+
+  const redirect = location.search ? location.search.split("=")[1] : "/"
 
   useEffect(() => {
     if (userInfo) {

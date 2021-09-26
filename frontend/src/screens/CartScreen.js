@@ -105,7 +105,13 @@ const CartScreen = ({ match, location, history }) => {
             </ListGroup>
           ) : (
             <Message>
-              Your Cart is Empty <Link to="/">Go Back </Link>
+              Your Cart is Empty{" "}
+              <Link
+                to="/"
+                style={{ textDecoration: "none", fontWeight: "bold" }}
+              >
+                Go Back{" "}
+              </Link>
             </Message>
           )}
         </Col>

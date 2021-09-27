@@ -67,3 +67,30 @@ export const registerUser = asyncHandler(async (req, res) => {
     throw new Error("Invalid User Data")
   }
 })
+
+//@desc  UPDATE USER PROFILE
+//@route PUT /users/profile
+//@access PRIVATE
+
+export const updateUser = asyncHandler(async (req, res) => {
+  const { name, email, password } = req.body
+  const userExists = await User.findById(req.user._id)
+
+  if (userExists) {
+    userExists.name = name || userExists.name
+    userExists.password = password || userExists.password
+    userExists.email = email || userExists.email
+
+    const updateUser = await userExists.save()
+    res.json({
+      _id: updateUser._id,
+      name: updateUser.name,
+      email: updateUser.email,
+      isAdmin: updateUser.isAdmin,
+      token: generateToken(updateUser._id),
+    })
+  } else {
+    res.status(404)
+    throw new Error("User not found ")
+  }
+})

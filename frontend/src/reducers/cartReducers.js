@@ -4,11 +4,9 @@ export const cartReducers = (state = { cartItems: [] }, action) => {
   switch (action.type) {
     case ADD_TO_CART:
       const item = action.payload
-
       const productAlreadyInCart = state.cartItems.find(
         (product) => product.product_id === item.product_id
       )
-
       if (productAlreadyInCart) {
         return {
           ...state,

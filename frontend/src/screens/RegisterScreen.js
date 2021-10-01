@@ -14,8 +14,8 @@ const RegisterScreen = ({ history }) => {
   const [confirmPassword, setConfirmPassword] = useState()
   const [message, setMessage] = useState()
 
-  const LoggedinUser = useSelector((state) => state.userLogin)
-  const { loading, error, userInfo } = LoggedinUser
+  const registeredUser = useSelector((state) => state.userRegister)
+  const { loading, error, userInfo } = registeredUser
 
   const dispatch = useDispatch()
 

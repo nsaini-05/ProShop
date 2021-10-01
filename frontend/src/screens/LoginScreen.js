@@ -9,7 +9,6 @@ import FormContainer from "../components/FormContainer"
 const LoginScreen = ({ history, location }) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-
   const LoggedinUser = useSelector((state) => state.userLogin)
   const { loading, error, userInfo } = LoggedinUser
 
@@ -19,9 +18,9 @@ const LoginScreen = ({ history, location }) => {
 
   useEffect(() => {
     if (userInfo) {
-      history.push("/products")
+      history.push(redirect ? `/${redirect}` : "/products/")
     }
-  }, [dispatch, userInfo])
+  }, [dispatch, userInfo, location])
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -56,12 +55,7 @@ const LoginScreen = ({ history, location }) => {
             />
           </Form.Group>
 
-          <Button
-            type="submit"
-            variant="primary"
-            className="py-3"
-            onClick={submitHandler}
-          >
+          <Button type="submit" variant="primary" onClick={submitHandler}>
             Submit
           </Button>
 

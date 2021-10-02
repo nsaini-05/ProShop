@@ -8,7 +8,7 @@ import {
 } from "./middlewares/errorHandler.js"
 import productRoutes from "./routes/productRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
-
+import orderRoutes from "./routes/orderRoutes.js"
 dotenv.config()
 const app = express()
 app.use(express.json())
@@ -17,6 +17,7 @@ connectDB()
 
 app.use("/products", productRoutes)
 app.use("/users", userRoutes)
+app.use("/orders", orderRoutes)
 
 //Error Handling Middlewares
 app.use(notFoundErrorHandler)

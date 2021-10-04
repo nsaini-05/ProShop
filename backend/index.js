@@ -15,13 +15,13 @@ app.use(express.json())
 app.use(cors())
 connectDB()
 
-app.use("/products", productRoutes)
-app.use("/users", userRoutes)
-app.use("/orders", orderRoutes)
-
 app.get("/api/config/paypal", (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
 )
+
+app.use("/products", productRoutes)
+app.use("/users", userRoutes)
+app.use("/orders", orderRoutes)
 
 //Error Handling Middlewares
 app.use(notFoundErrorHandler)

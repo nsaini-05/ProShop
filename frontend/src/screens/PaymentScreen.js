@@ -9,11 +9,17 @@ const PaymentScreen = ({ history }) => {
   const dispatch = useDispatch()
   const { shippingAddress } = useSelector((state) => state.cart)
 
+  const LoggedinUser = useSelector((state) => state.userLogin)
+  const { userInfo } = LoggedinUser
+
   useEffect(() => {
+    if (!userInfo) {
+      history.push("/login")
+    }
     if (!shippingAddress) {
       history.push("/shipping")
     }
-  }, [])
+  }, [userInfo])
 
   const [paymentMethod, setPaymentMethod] = useState("Paypal")
 

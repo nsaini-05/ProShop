@@ -8,6 +8,13 @@ import { CheckoutSteps } from "../components/CheckoutSteps"
 const ShippingScreen = ({ history }) => {
   const dispatch = useDispatch()
   const { shippingAddress } = useSelector((state) => state.cart)
+  const LoggedinUser = useSelector((state) => state.userLogin)
+  const { userInfo } = LoggedinUser
+  useEffect(() => {
+    if (!userInfo) {
+      history.push("/login")
+    }
+  }, [dispatch, userInfo])
 
   const [address, setAddress] = useState(shippingAddress.address)
   const [city, setCity] = useState(shippingAddress.city)

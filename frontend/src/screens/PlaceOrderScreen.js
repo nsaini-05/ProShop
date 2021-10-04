@@ -14,11 +14,17 @@ const PlaceOrderScreen = ({ history }) => {
   const orderCreate = useSelector((state) => state.orderCreate)
   const { order, success, error } = orderCreate
 
+  const LoggedinUser = useSelector((state) => state.userLogin)
+  const { userInfo } = LoggedinUser
+
   useEffect(() => {
+    if (!userInfo) {
+      history.push("/login")
+    }
     if (success) {
       history.push(`/order/${order._id}`)
     }
-  }, [order, success])
+  }, [order, success, userInfo])
 
   const toDecimal = (number) => {
     return number.toFixed(2)

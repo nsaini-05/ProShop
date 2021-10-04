@@ -10,8 +10,9 @@ import { ORDER_PAY_RESET } from "../constants/orderConstants"
 
 import axios from "axios"
 
-const OrderScreen = ({ match }) => {
+const OrderScreen = ({ history, match }) => {
   const [sdkReady, setSdkReady] = useState(false)
+  const [runTimeError, setRunTimeError] = useState("")
   const dispatch = useDispatch()
 
   const orderDetails = useSelector((state) => state.orderDetails)
@@ -21,7 +22,18 @@ const OrderScreen = ({ match }) => {
   const orderPay = useSelector((state) => state.orderPay)
   const { loading: loadingPay, success: successPay } = orderPay
 
+  const LoggedinUser = useSelector((state) => state.userLogin)
+  const { userInfo } = LoggedinUser
+
   useEffect(() => {
+    if (!userInfo) {
+      history.push("/login")
+    }
+
+    if (userInfo && order && userInfo._id !== order.user._id) {
+      setRunTimeError("Invalid Credentials to access this resource")
+    }
+
     const addPaypalScript = async () => {
       const { data: clientId } = await axios.get("/api/config/paypal")
       const script = document.createElement("script")
@@ -45,14 +57,16 @@ const OrderScreen = ({ match }) => {
         }
       }
     }
-  }, [dispatch, successPay, match.params.id, order])
+  }, [dispatch, successPay, match.params.id, order, LoggedinUser])
 
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult)
     dispatch(payOrder(order._id, paymentResult))
   }
 
-  return loading || !order ? (
+  return runTimeError ? (
+    <Message variant="danger">{runTimeError}</Message>
+  ) : loading || !order ? (
     <Loader />
   ) : error ? (
     <Message>{error}</Message>

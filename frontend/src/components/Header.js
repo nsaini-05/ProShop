@@ -15,7 +15,7 @@ const Header = () => {
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
-        <Navbar.Brand href="#home">PROSHOP</Navbar.Brand>
+        <Navbar.Brand href="/">PROSHOP</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" className="mx-auto" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">
@@ -41,6 +41,24 @@ const Header = () => {
                 </Nav.Link>
               </LinkContainer>
             )}
+
+
+
+            {userInfo && userInfo.isAdmin  && (
+              <NavDropdown title='admin' id= 'adminMenu'>
+              <LinkContainer to="/admin/userlist">
+                <NavDropdown.Item>Users</NavDropdown.Item>
+              </LinkContainer>
+              <LinkContainer to="/admin/productlist">
+                <NavDropdown.Item>Products</NavDropdown.Item>
+              </LinkContainer>
+              <LinkContainer to="/admin/orderlist">
+                <NavDropdown.Item>Orders</NavDropdown.Item>
+              </LinkContainer>
+            </NavDropdown>
+            )}
+
+
           </Nav>
         </Navbar.Collapse>
       </Container>

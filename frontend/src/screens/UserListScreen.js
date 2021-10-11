@@ -5,20 +5,35 @@ import { useDispatch, useSelector } from "react-redux"
 import { userRegister } from "../actions/userActions"
 import Message from "../components/Message"
 import Loader from "../components/Loader"
-import {listUsers} from "../actions/userActions"
-const UserListScreen = () => {
+import {listUsers , deleteUser} from "../actions/userActions"
+
+const UserListScreen = ({history}) => {
   const dispatch = useDispatch()
   const userList = useSelector((state) => state.userList)
   const{loading, error, users} = userList
 
+  
+  const LoggedinUser = useSelector((state) => state.userLogin)
+  const { userInfo } = LoggedinUser
+
+
+  const userDelete = useSelector((state) => state.userDelete)
+  const { success : successDelete } = userDelete
 
   const deleteHandler = (id)=>{
-    console.log(id)
+    if(window.confirm('Are you sure you want to delete')){
+    dispatch(deleteUser(id))
+    }
   }
 
   useEffect(() => {
+    if(userInfo && userInfo.isAdmin){
     dispatch(listUsers())
-  },[dispatch])
+    }
+    else{
+        history.push("/login")
+    }
+  },[dispatch, userInfo ,successDelete])
 
  
     
@@ -49,7 +64,7 @@ const UserListScreen = () => {
             {(user.isAdmin)  ?  <i className="fas fa-check" style={{ color: "green" }}></i> : <i className="fas fa-times" style={{ color: "red" }}></i>}
           </td>
           <td>
-            <LinkContainer Container to = {`/user/${user._id}/edit`}>
+            <LinkContainer Container to = {`/admin/user/${user._id}/edit`}>
               <Button variatnt = 'light' className = 'btn-sm'>
                 <i className = 'fas fa-edit'></i>
               </Button>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Form, Button, Row, Col } from "react-bootstrap"
-import { userLogin, userRegister } from "../actions/userActions"
+import { userLogin } from "../actions/userActions"
 import { useDispatch, useSelector } from "react-redux"
 import Loader from "../components/Loader"
 import Message from "../components/Message"
@@ -20,7 +20,7 @@ const LoginScreen = ({ history, location }) => {
     if (userInfo) {
       history.push(redirect ? `/${redirect}` : "/products/")
     }
-  }, [dispatch, userInfo, location])
+  }, [dispatch, userInfo, location , history, redirect])
 
   const submitHandler = (e) => {
     e.preventDefault()

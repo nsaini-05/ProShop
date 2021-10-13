@@ -3,74 +3,50 @@ import { Row, Col, Button, ListGroup, Image, Card } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import Message from "../components/Message"
 import { Link } from "react-router-dom"
-import { getOrderDetails, payOrder } from "../actions/orderActions"
+import {
+  getOrderDetails,
+  deliverOrder,
+} from "../actions/orderActions"
 import Loader from "../components/Loader"
-import { PayPalButton } from "react-paypal-button-v2"
-import { ORDER_PAY_RESET } from "../constants/orderConstants"
-
 import axios from "axios"
 
 const OrderScreen = ({ history, match }) => {
-  const [sdkReady, setSdkReady] = useState(false)
-  const [runTimeError, setRunTimeError] = useState("")
+ 
+  // const [runTimeError, setRunTimeError] = useState("")
   const dispatch = useDispatch()
-
   const orderDetails = useSelector((state) => state.orderDetails)
 
-  const { order, error, loading } = orderDetails
+  const { order, error, loading } = orderDetails  
 
-  const orderPay = useSelector((state) => state.orderPay)
-  const { loading: loadingPay, success: successPay } = orderPay
+  const orderDeliver = useSelector((state) => state.orderDeliver)
+  const { loading: loadingDeliver, success: successDeliver } = orderDeliver
 
   const LoggedinUser = useSelector((state) => state.userLogin)
   const { userInfo } = LoggedinUser
 
+
+
+
+
+
   useEffect(() => {
-    if (!userInfo) {
-      history.push("/login")
-    }
+   if(!userInfo ||  !userInfo.isAdmin){history.push("/login")}
 
-    if (userInfo && order && userInfo._id !== order.user._id) {
-      setRunTimeError("Invalid Credentials to access this resource")
-    }
+    dispatch(getOrderDetails(match.params.id))
+   
+  }, [dispatch, match.params.id, successDeliver, userInfo])
 
-    const addPaypalScript = async () => {
-      const { data: clientId } = await axios.get("/api/config/paypal")
-      const script = document.createElement("script")
-      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
-      script.async = true
-      script.onload = () => {
-        setSdkReady(true)
-      }
-      document.body.appendChild(script)
-    }
+ 
 
-    if (!order || successPay) {
-      dispatch({ type: ORDER_PAY_RESET })
-      dispatch(getOrderDetails(match.params.id))
-    } else {
-      if (!order.isPaid) {
-        if (!window.paypal) {
-          addPaypalScript()
-        } else {
-          setSdkReady(true)
-        }
-      }
-    }
-  }, [dispatch, successPay, match.params.id, order, LoggedinUser])
-
-  const successPaymentHandler = (paymentResult) => {
-    console.log(paymentResult)
-    dispatch(payOrder(order._id, paymentResult))
+  const deliverHandler = () => {
+    dispatch(deliverOrder(order._id))
   }
 
-  return runTimeError ? (
-    <Message variant="danger">{runTimeError}</Message>
+  return error ? (
+    <Message variant="danger">{error}</Message>
   ) : loading || !order ? (
-    <Loader />
-  ) : error ? (
-    <Message>{error}</Message>
-  ) : (
+    <Message variant="danger">loading</Message>
+  ) :  (
     <>
       <h1>Order {order._id}</h1>
 
@@ -173,21 +149,18 @@ const OrderScreen = ({ history, match }) => {
                 </Row>
               </ListGroup.Item>
 
-              {!order.isPaid ? (
+             
+
+              {userInfo.isAdmin && order.isPaid && !order.delivered&& (
                 <ListGroup.Item>
-                  {loadingPay && <Loader />}
-                  {!sdkReady ? (
-                    <Loader />
-                  ) : (
-                    <PayPalButton
-                      amount={order.totalPrice}
-                      // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
-                      onSuccess={successPaymentHandler}
-                    />
-                  )}
+                  <Button
+                    type="button"
+                    className="btn btn-block"
+                    onClick={deliverHandler}
+                  >
+                    Mark as Delivered
+                  </Button>
                 </ListGroup.Item>
-              ) : (
-                <></>
               )}
             </ListGroup>
           </Card>

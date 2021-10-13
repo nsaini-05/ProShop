@@ -49,7 +49,6 @@ export const getOrderById = asyncHandler(async (req, res) => {
 
 //@desc Update Order to Paid
 //@route Post /orders/:id/pay
-
 export const updateOrderToPaid = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
   if (order) {
@@ -81,4 +80,19 @@ export const getMyOrders = asyncHandler(async (req, res) => {
 export const getOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({}).populate("user", "name email")
   res.status(200).json(orders)
+})
+
+//@desc Update Order to Delievered
+//@route Post /orders/:id/deliver
+export const updateOrderToDelievered = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+  if (order) {
+    order.delivered = true
+    order.deliveredAt = Date.now()
+    const updatedOrder = await order.save()
+    res.json(updatedOrder)
+  } else {
+    res.status(404)
+    throw new Error("Order not found")
+  }
 })

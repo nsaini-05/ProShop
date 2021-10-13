@@ -54,22 +54,22 @@ const OrderListScreen = ({ history }) => {
 
                   <td>
                     {order.isPaid ? (
-                      order.paidAt.subString(0, 10)
+                      order.paidAt.substring(0, 10)
                     ) : (
                       <i className="fas fa-times" style={{ color: "red" }}></i>
                     )}
                   </td>
 
                   <td>
-                    {order.isDelivered ? (
-                      order.deliveredAt.subString(0, 10)
+                    {order.delivered ? (
+                      order.deliveredAt.substring(0,10)
                     ) : (
                       <i className="fas fa-times" style={{ color: "red" }}></i>
                     )}
                   </td>
 
                   <td>
-                    <LinkContainer Container to={`/order/${order._id}`}>
+                    <LinkContainer Container to={`/admin/orders/${order._id}`}>
                       <Button variatnt="light" className="btn-sm">
                         Details
                       </Button>

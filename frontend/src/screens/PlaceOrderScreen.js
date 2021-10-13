@@ -22,7 +22,7 @@ const PlaceOrderScreen = ({ history }) => {
       history.push("/login")
     }
     if (success) {
-      history.push(`/order/${order._id}`)
+      history.push(`/orders/${order._id}`)
     }
   }, [order, success, userInfo])
 

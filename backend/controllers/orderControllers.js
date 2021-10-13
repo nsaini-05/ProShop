@@ -4,7 +4,6 @@ import asyncHandler from "express-async-handler"
 //@desc Create New Order
 //@route Post /orders
 export const addOrderItems = asyncHandler(async (req, res) => {
-  console.log()
   const {
     orderItems,
     shippingAddress,
@@ -75,4 +74,11 @@ export const updateOrderToPaid = asyncHandler(async (req, res) => {
 export const getMyOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({ user: req.user._id })
   res.json(orders)
+})
+
+//@desc GET ALL ORDERS
+//@route GET /orders/myorders
+export const getOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({}).populate("user", "name email")
+  res.status(200).json(orders)
 })

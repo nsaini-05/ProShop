@@ -6,6 +6,8 @@ import Product from '../components/Product'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Paginate from '../components/Paginate'
+import Meta from '../components/Meta'
+import ProductCarousel from '../components/ProductCarousel'
 const HomeScreen = ({ match }) => {
   // const [products, setProducts] = useState()
   const keyword = match.params.keyword
@@ -21,6 +23,8 @@ const HomeScreen = ({ match }) => {
 
   return (
     <>
+      <Meta title={'Welcome to ProShop'}></Meta>
+      {!keyword ? <ProductCarousel> </ProductCarousel> : <></>}
       <h1>Latest Products</h1>
       {loading ? (
         <Loader />

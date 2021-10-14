@@ -4,7 +4,7 @@ import asyncHandler from 'express-async-handler'
 //@desc Fetch All Products
 //@route GET /products
 export const getAllProducts = asyncHandler(async (req, res) => {
-  const pageSize = 2
+  const pageSize = 6
   const page = Number(req.query.pageNumber) || 1
   const keyword = req.query.keyword
     ? { name: { $regex: req.query.keyword, $options: 'i' } }
@@ -127,4 +127,15 @@ export const createProductReview = asyncHandler(async (req, res) => {
     res.status(404)
     throw new Error('Product not found')
   }
+})
+
+//@desc GET TOP RATED PRODUCTS
+//@route GET products/top
+//@access Public
+
+export const getTopProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({})
+    .sort({ rating: -1 })
+    .limit(3)
+  res.json(products)
 })

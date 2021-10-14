@@ -1,14 +1,24 @@
 import React from 'react'
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import { userLogout } from '../actions/userActions'
-import SearchBox from '../components/SearchBox'
 import { Route } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { LinkContainer } from 'react-router-bootstrap'
+import {
+  Navbar,
+  Nav,
+  Container,
+  NavDropdown,
+  Form,
+  FormControl,
+  Button
+} from 'react-bootstrap'
+import SearchBox from './SearchBox'
+import { userLogout } from '../actions/userActions'
+
 const Header = () => {
-  const LoggedinUser = useSelector(state => state.userLogin)
-  const { userInfo } = LoggedinUser
   const dispatch = useDispatch()
+
+  const userLogin = useSelector(state => state.userLogin)
+  const { userInfo } = userLogin
 
   const logoutHandler = () => {
     dispatch(userLogout())
@@ -16,22 +26,17 @@ const Header = () => {
 
   return (
     <Navbar bg='dark' variant='dark' expand='lg'>
-      <Container>
-        <Navbar.Brand href='/'>PROSHOP</Navbar.Brand>
-        <Navbar.Toggle aria-controls='basic-navbar-nav' />
-        <Navbar.Collapse id='basic-navbar-nav'>
-          <Route
-            render={({ history }) => <SearchBox history={history}></SearchBox>}
-          />
-          <Nav className='ml-auto'>
-            <LinkContainer to='/cart'>
-              <Nav.Link>
-                <i className='fa fa-shopping-cart'> </i>Cart
-              </Nav.Link>
-            </LinkContainer>
-
+      <Container fluid>
+        <Navbar.Brand href='/'>ProShop</Navbar.Brand>
+        <Navbar.Toggle aria-controls='navbarScroll' />
+        <Navbar.Collapse id='navbarScroll'>
+          <Nav
+            className='me-auto my-2 my-lg-0'
+            style={{ maxHeight: '100px' }}
+            navbarScroll
+          >
             {userInfo ? (
-              <NavDropdown title={userInfo.name}>
+              <NavDropdown title={userInfo.name} id='username'>
                 <LinkContainer to='/profile'>
                   <NavDropdown.Item>Profile</NavDropdown.Item>
                 </LinkContainer>
@@ -42,13 +47,12 @@ const Header = () => {
             ) : (
               <LinkContainer to='/login'>
                 <Nav.Link>
-                  <i className='fa fa-user'></i>SignIn
+                  <i className='fas fa-user'></i> Sign In
                 </Nav.Link>
               </LinkContainer>
             )}
-
             {userInfo && userInfo.isAdmin && (
-              <NavDropdown title='Admin Panel' id='adminMenu'>
+              <NavDropdown title='Admin' id='adminmenu'>
                 <LinkContainer to='/admin/userlist'>
                   <NavDropdown.Item>Users</NavDropdown.Item>
                 </LinkContainer>
@@ -62,6 +66,8 @@ const Header = () => {
             )}
           </Nav>
         </Navbar.Collapse>
+
+        <Route render={({ history }) => <SearchBox history={history} />} />
       </Container>
     </Navbar>
   )

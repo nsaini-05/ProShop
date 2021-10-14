@@ -1,5 +1,5 @@
-import Product from "../models/productModel.js"
-import asyncHandler from "express-async-handler"
+import Product from '../models/productModel.js'
+import asyncHandler from 'express-async-handler'
 
 //@desc Fetch All Products
 //@route GET /products
@@ -14,7 +14,7 @@ export const getSpecificProducts = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id)
   if (!product) {
     res.status(404)
-    throw new Error("Product not found")
+    throw new Error('Product not found')
   }
   res.json(product)
 })
@@ -26,10 +26,10 @@ export const deleteProduct = asyncHandler(async (req, res) => {
 
   if (product) {
     await product.remove()
-    res.json({ message: "Product removed Successfully." })
+    res.json({ message: 'Product removed Successfully.' })
   } else {
     res.status(404)
-    throw new Error("Product not found")
+    throw new Error('Product not found')
   }
 })
 
@@ -38,11 +38,11 @@ export const deleteProduct = asyncHandler(async (req, res) => {
 export const createProduct = asyncHandler(async (req, res) => {
   const product = {
     user: req.user._id,
-    name: "sample",
-    image: "/images/phone.jpg",
-    brand: "sample brand",
-    description: "sample description",
-    category: "sample category",
+    name: 'sample',
+    image: '/images/phone.jpg',
+    brand: 'sample brand',
+    description: 'sample description',
+    category: 'sample category'
   }
 
   const createdProduct = await Product.create(product)
@@ -53,8 +53,15 @@ export const createProduct = asyncHandler(async (req, res) => {
 //@route PUT products/:id
 export const updateProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id)
-  const { name, price, description, category, image, countInStock, brand } =
-    req.body
+  const {
+    name,
+    price,
+    description,
+    category,
+    image,
+    countInStock,
+    brand
+  } = req.body
 
   if (product) {
     product.name = name || product.name
@@ -69,6 +76,45 @@ export const updateProduct = asyncHandler(async (req, res) => {
     res.status(200).json(product)
   } else {
     res.status(404)
-    throw new Error("Product not found")
+    throw new Error('Product not found')
+  }
+})
+
+//@desc POST Create a review
+//@route POST products/:id/reviews
+//@access Private
+export const createProductReview = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id)
+  const { rating, comment } = req.body
+
+  if (product) {
+    const alreadyReviewed = product.reviews.find(
+      r => r.user.toString() === req.user._id.toString()
+    )
+    if (alreadyReviewed) {
+      res.status(400)
+      throw new Error('Product Already Reviewed ')
+    }
+
+    const review = {
+      user: req.user._id,
+      name: req.user.name,
+      rating: Number(rating),
+      comment
+    }
+
+    product.reviews.push(review)
+    product.numReviews = product.reviews.length
+    product.rating = product.reviews.reduce(
+      (acc, current) => current.rating + acc,
+      0
+    )
+    product.rating = product.rating / product.reviews.length
+
+    await product.save()
+    res.status(201).json({ message: 'Review Added' })
+  } else {
+    res.status(404)
+    throw new Error('Product not found')
   }
 })

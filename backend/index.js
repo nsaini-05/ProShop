@@ -1,6 +1,7 @@
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
+import morgan from "morgan"
 import connectDB from "./config/db.js"
 import {
   notFoundErrorHandler,
@@ -13,6 +14,11 @@ import uploadRoutes from "./routes/uploadRoutes.js"
 import path from "path"
 dotenv.config()
 const app = express()
+
+if(process.env.NODE_ENV === 'DEVELOPMENT'){
+  app.use(morgan('dev'))
+}
+
 app.use(express.json())
 app.use(cors())
 connectDB()

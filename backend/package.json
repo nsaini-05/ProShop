@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "nodemon index.js",
-    "prod": "SET NODE_ENV=PRODUCTION&& nodemon index.js",
-    "dev": "SET NODE_ENV=DEVELOPMENT&& nodemon index.js",
+    "prod": "set NODE_ENV=PRODUCTION&& nodemon index.js",
+    "dev": "set NODE_ENV=DEVELOPMENT&& nodemon index.js",
     "data:import": "node seeder",
     "data:destroy": "node seeder -d"
   },
